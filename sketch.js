@@ -1,5 +1,6 @@
 const windowHeight = 500;
 const windowWidth = 500;
+let sWeightMult = 1.0
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -17,8 +18,8 @@ function draw() {
   // grid();
   translate(windowWidth / 2, windowHeight / 2);
   axes();
-  scale(1.0, -1.0)
-  drawCurve(10)
+  scale(3.0, -3.0)
+  // drawCurve(10)
   pop();
 	// ellipse(mouseX, mouseY, 20, 20);
 }
@@ -44,13 +45,14 @@ const drawCurve = (sampleRate) => {
   console.log(windowWidth / sampleRate)
   beginShape()
   noFill();
+  strokeWeight(1)
   _.range(windowWidth / sampleRate)
     .map(x => {
       return (- (windowWidth / 2)) + (x * sampleRate)
     })
     .forEach(x => {
       console.log(x);
-      const y = 0.002 * x ** 3 + 10;
+      const y = (0.002 * x ** 3) + (3 * x ** 2);
       curveVertex(x, y)
     });
   endShape()
