@@ -1,10 +1,10 @@
 const windowHeight = 500;
 const windowWidth = 500;
 let sWeightMult = 1.0
+let viewScale = 20.0;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-  background(100);
   // push();
   // translate(windowWidth / 2, windowHeight / 2);
   // scale(1.0, -1.0)
@@ -13,24 +13,48 @@ function setup() {
 }
 
 function draw() {
+  background(100)
   grid();
   push();
   // grid();
   translate(windowWidth / 2, windowHeight / 2);
+  scale(viewScale, viewScale);
   axes();
-  scale(3.0, -3.0)
+  // scale(3.0, -3.0)
   // drawCurve(10)
   pop();
 	// ellipse(mouseX, mouseY, 20, 20);
 }
 
+function mouseWheel(event) {
+  viewScale += event.delta
+  if (viewScale <= 20.0) { viewScale = 20.0 }
+}
+
 const axes = () => {
+  const axesNotches = 26;
+
   stroke(0)
-  strokeWeight(2)
+  strokeWeight($s(2.0))
   // x axis
-  line(-200, 0, 200, 0);
+  line(-(windowWidth / 2), 0, windowWidth / 2, 0);
+
+  _.range(axesNotches)
+  // offset range to create negative notches
+  .map(x => x - axesNotches / 2)
+  .forEach(x => {
+    line(x, $s(-5), x, $s(5));
+  });
+
   // y axis
-  line(0, -200, 0, 200);
+  line(0, -(windowHeight / 2), 0, windowHeight / 2);
+
+  _.range(axesNotches)
+  // offset range to create negative notches
+  .map(y => y - axesNotches / 2)
+  .forEach(y => {
+    line($s(-5), y, $s(5), y);
+  });
 }
 
 const grid = () => {
@@ -57,3 +81,5 @@ const drawCurve = (sampleRate) => {
     });
   endShape()
 }
+
+const $s = x => x / viewScale
